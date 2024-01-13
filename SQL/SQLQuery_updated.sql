@@ -166,6 +166,8 @@ GO
 
 -- Employees
 -- Create a view to get employee details with department details
+DROP VIEW vw_EmployeeDetails;
+
 CREATE VIEW vw_EmployeeDetails AS
 SELECT
     E.EmployeeID,

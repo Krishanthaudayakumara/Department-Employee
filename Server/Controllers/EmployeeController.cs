@@ -23,6 +23,52 @@ namespace Server.Controllers
             return Ok(employees);
         }
 
+        [HttpGet("details")]
+        public IActionResult GetEmployeeDetails()
+        {
+            try
+            {
+                var employeeDetails = _employeeService.GetEmployeesDetails();
+                return Ok(employeeDetails);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
+        [HttpGet("details/department/{departmentID}")]
+        public IActionResult GetEmployeeDetailsByDepartmentID(int departmentID)
+        {
+            try
+            {
+                var employeeDetails = _employeeService.GetEmployeeDetailsByDepartmentID(departmentID);
+                return Ok(employeeDetails);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+
+
+        }
+
+        [HttpGet("details/departmentcode/{departmentCode}")]
+        public IActionResult GetEmployeeDetailsByDepartmentCode(string departmentCode)
+        {
+            try
+            {
+                var employeeDetails = _employeeService.GetEmployeeDetailsByDepartmentCode(departmentCode);
+                return Ok(employeeDetails);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+
+
+        }
+
         [HttpPost]
         public IActionResult AddEmployee([FromBody] EmployeeDto employeeDto)
         {

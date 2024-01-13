@@ -17,9 +17,16 @@ namespace Server.Services
             _connectionString = connectionString;
         }
 
-        public IEnumerable<Employee> GetEmployees()
+        
+        private T MapReaderToObject<T>(SqlDataReader reader, Func<SqlDataReader, T> mapFunction)
         {
-            List<Employee> employees = new List<Employee>();
+            T result = mapFunction(reader);
+            return result;
+        }
+
+        private IEnumerable<T> ExecuteStoredProcedure<T>(string procedureName, SqlParameter[] parameters, Func<SqlDataReader, T> mapFunction)
+        {
+            List<T> result = new List<T>();
 
             try
             {
@@ -27,27 +34,20 @@ namespace Server.Services
                 {
                     connection.Open();
 
-                    using (SqlCommand command = new SqlCommand("usp_GetEmployees", connection))
+                    using (SqlCommand command = new SqlCommand(procedureName, connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+
+                        if (parameters != null)
+                        {
+                            command.Parameters.AddRange(parameters);
+                        }
 
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                Employee employee = new Employee
-                                {
-                                    EmployeeID = (int)reader["EmployeeID"],
-                                    FirstName = reader["FirstName"].ToString(),
-                                    LastName = reader["LastName"].ToString(),
-                                    EmailAddress = reader["EmailAddress"].ToString(),
-                                    DateOfBirth = (DateTime)reader["DateOfBirth"],
-                                    Age = (int)reader["Age"],
-                                    Salary = (decimal)reader["Salary"],
-                                    DepartmentID = (int)reader["DepartmentID"]
-                                };
-
-                                employees.Add(employee);
+                                result.Add(MapReaderToObject(reader, mapFunction));
                             }
                         }
                     }
@@ -60,7 +60,63 @@ namespace Server.Services
                 throw;
             }
 
-            return employees;
+            return result;
+        }
+
+        private Employee MapEmployee(SqlDataReader reader)
+        {
+            return new Employee
+            {
+                EmployeeID = (int)reader["EmployeeID"],
+                FirstName = reader["FirstName"].ToString(),
+                LastName = reader["LastName"].ToString(),
+                EmailAddress = reader["EmailAddress"].ToString(),
+                DateOfBirth = (DateTime)reader["DateOfBirth"],
+                Age = (int)reader["Age"],
+                Salary = (decimal)reader["Salary"],
+                DepartmentID = (int)reader["DepartmentID"]
+            };
+        }
+
+        private EmployeeDetailsDto MapEmployeeDetails(SqlDataReader reader)
+        {
+            return new EmployeeDetailsDto
+            {
+                EmployeeID = (int)reader["EmployeeID"],
+                FirstName = reader["FirstName"].ToString(),
+                LastName = reader["LastName"].ToString(),
+                EmailAddress = reader["EmailAddress"].ToString(),
+                DateOfBirth = (DateTime)reader["DateOfBirth"],
+                Age = (int)reader["Age"],
+                Salary = (decimal)reader["Salary"],
+                DepartmentID = (int)reader["DepartmentID"],
+                DepartmentCode = reader["DepartmentCode"].ToString(),
+                DepartmentName = reader["DepartmentName"].ToString()
+            };
+        }
+
+        public IEnumerable<Employee> GetEmployees()
+        {
+            SqlParameter[] parameters = null;
+            return ExecuteStoredProcedure("usp_GetEmployees", parameters, MapEmployee);
+        }
+
+        public IEnumerable<EmployeeDetailsDto> GetEmployeesDetails()
+        {
+            SqlParameter[] parameters = null;
+            return ExecuteStoredProcedure("usp_GetEmployeeDetails", parameters, MapEmployeeDetails);
+        }
+
+        public IEnumerable<EmployeeDetailsDto> GetEmployeeDetailsByDepartmentID(int departmentID)
+        {
+            SqlParameter[] parameters = { new SqlParameter("@DepartmentID", departmentID) };
+            return ExecuteStoredProcedure("usp_GetEmployeeDetailsByDepartmentID", parameters, MapEmployeeDetails);
+        }
+
+        public IEnumerable<EmployeeDetailsDto> GetEmployeeDetailsByDepartmentCode(string departmentCode)
+        {
+            SqlParameter[] parameters = { new SqlParameter("@DepartmentCode", departmentCode) };
+            return ExecuteStoredProcedure("usp_GetEmployeeDetailsByDepartmentCode", parameters, MapEmployeeDetails);
         }
 
         public Employee AddEmployee(EmployeeDto employeeDto)
@@ -195,5 +251,6 @@ namespace Server.Services
 
             return success;
         }
+
     }
 }
