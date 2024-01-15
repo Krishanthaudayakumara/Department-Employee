@@ -114,7 +114,7 @@ namespace Server.Controllers
 
                 return Ok(updatedEmployee);
             }
-            catch (ApplicationException ex)
+            catch (Exception ex)
             {
                 return BadRequest(new { error = ex.Message });
             }

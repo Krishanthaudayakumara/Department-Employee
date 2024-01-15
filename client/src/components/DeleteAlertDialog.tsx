@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,8 +22,7 @@ export function DeleteAlertDialog( { reloadDataTable, onDelete }: { reloadDataTa
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            This action cannot be undone. This will permanently delete the record and remove the data from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -31,6 +31,9 @@ export function DeleteAlertDialog( { reloadDataTable, onDelete }: { reloadDataTa
             async () => {
               await onDelete();
               await reloadDataTable();
+              await toast('Record Deleted! ⛔', {
+                icon: '⛔ 🗑️',
+              });
             }
             }>Continue</AlertDialogAction>
         </AlertDialogFooter>

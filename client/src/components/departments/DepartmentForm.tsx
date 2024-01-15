@@ -14,6 +14,7 @@ import * as z from "zod";
 import { useEffect } from "react";
 import { Department } from "../../utils/types";
 import { createDepartment, updateDepartment } from "../../utils/api";
+import toast from "react-hot-toast";
 
 interface DepartmentFormProps {
   onFormSubmit: () => void;
@@ -54,11 +55,17 @@ export function DepartmentForm({
         ? createDepartment(data)
         : updateDepartment(Number(initialData?.departmentID) || 0, data));
       console.log(response);
+      toast.success(`Department ${method === "POST" ? "added" : "updated"} successfully`);
+
       onFormSubmit();
-    } catch (error) {
-      console.error(`Error ${method === "POST" ? "creating" : "updating"} department:`, error);
-    } finally {
+
       form.reset();
+
+    } catch (error: any) {
+      console.error(`Error ${method === "POST" ? "creating" : "updating"} department:`, error);
+      toast.error(`Error ${method === "POST" ? "creating" : "updating"} department: ${error.response.data.error}`);
+
+    } finally {
       console.log("Form submitted:", data);
     }
   }

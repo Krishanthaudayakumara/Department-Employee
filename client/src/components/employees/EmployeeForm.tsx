@@ -16,6 +16,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { EmployeeFormData } from "../../utils/types";
 import { createEmployee, updateEmployee } from "../../utils/api";
+import toast from "react-hot-toast";
 
 interface EmployeeFormProps {
   onFormSubmit: () => void;
@@ -69,12 +70,18 @@ export function EmployeeForm({
           ? createEmployee(data)
           : updateEmployee(Number(initialData?.employeeID) || 0, data));
         console.log(response);
+        toast.success(`Employee ${method === "POST" ? "added" : "updated"} successfully`);
+
         onFormSubmit();
+        form.reset();
+
       }
-      catch (error) {
+      catch (error: any) {
       console.error(`Error ${method === "POST" ? "creating" : "updating"} employee:`, error);
+      toast.error(`Error ${method === "POST" ? "creating" : "updating"} department: ${error.response.data.error}`);
+
+
     } finally {
-      form.reset();
 
       console.log("Form submitted:", data);
     }

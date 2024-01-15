@@ -17,6 +17,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { Switch } from "./ui/switch";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const SettingsSchema = z.object({
   type: z.enum(["all", "mentions", "none"], {
@@ -46,14 +47,8 @@ const Settings: React.FC = () => {
   });
 
   const onSubmit = (data: SettingsValues) => {
-    // toast({
-    //   title: "You submitted the following values:",
-    //   description: (
-    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
-    //   ),
-    // });
+    toast.success("Your Settings have been saved")
+    
   };
 
   return (

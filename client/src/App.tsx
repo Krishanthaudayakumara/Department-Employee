@@ -9,10 +9,13 @@ import DashboardPage from "./pages/Dashboard";
 import EmployeesPage from "./pages/Employees";
 import DepartmentsPage from "./pages/Departments";
 import SettingsPage from "./pages/Settings";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <div className="h-full relative">
+            <Toaster />
+
       <BrowserRouter>
         <div className="hidden h-full md:flex md:w-72 md:flex-col md:fixed md:inset-y-0 z-[80] bg-gray-900">
           <Sidebar />
@@ -21,6 +24,8 @@ function App() {
           <Navbar />
           <Routes>
             <Route path="/dashboard" Component={DashboardPage} />
+            <Route path="/" Component={DashboardPage} />
+
             <Route path="/employees" Component={EmployeesPage} />
             <Route path="/departments" Component={DepartmentsPage} />
             <Route path="/settings" Component={SettingsPage} />

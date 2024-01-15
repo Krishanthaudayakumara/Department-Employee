@@ -5,7 +5,7 @@ import { AddDepartmentForm } from "../components/departments/AddDepartmentForm";
 import { departmentColumns } from "../components/departments/departmentColumns";
 import { fetchDepartmentDetails } from "../utils/api";
 import { Department } from "../utils/types";
-
+import toast, { Toaster } from "react-hot-toast";
 
 const DepartmentsPage: React.FC = () => {
   const [departmentData, setDepartmentData] = useState<Department[]>([]);
@@ -32,8 +32,10 @@ const DepartmentsPage: React.FC = () => {
       setLoading(true);
       const data = await fetchDepartmentDetails();
       setDepartmentData(data);
-    } catch (error) {
+    
+    } catch (error: any) {
       setError(error as Error);
+      toast.error(`Error reloading department data: ${error.message}`);
     } finally {
       setLoading(false);
     }
