@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar";
 import DashboardPage from "./pages/Dashboard";
 import EmployeesPage from "./pages/Employees";
 import DepartmentsPage from "./pages/Departments";
+import SettingsPage from "./pages/Settings";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/dashboard" Component={DashboardPage} />
             <Route path="/employees" Component={EmployeesPage} />
             <Route path="/departments" Component={DepartmentsPage} />
+            <Route path="/settings" Component={SettingsPage} />
           </Routes>
         </main>
       </BrowserRouter>
