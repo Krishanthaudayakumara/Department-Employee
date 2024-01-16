@@ -9,7 +9,7 @@ export const fetchEmployeeDetails = async () => {
     return response.data;
   } catch (error) {
     console.error('Error fetching employee details:', error);
-    throw error; // Propagate the error for handling in the component
+    throw error; 
   }
 };
 

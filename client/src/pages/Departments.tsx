@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, CSSProperties } from "react";
 import { DataTable } from "../components/DataTable";
 import { CustomDialog } from "../components/CustomDialog";
 import { AddDepartmentForm } from "../components/departments/AddDepartmentForm";
@@ -6,6 +6,13 @@ import { departmentColumns } from "../components/departments/departmentColumns";
 import { fetchDepartmentDetails } from "../utils/api";
 import { Department } from "../utils/types";
 import toast, { Toaster } from "react-hot-toast";
+import { ClipLoader, PuffLoader } from "react-spinners";
+
+const override: CSSProperties = {
+  display: "block",
+  margin: "0 auto",
+  borderColor: "red",
+};
 
 const DepartmentsPage: React.FC = () => {
   const [departmentData, setDepartmentData] = useState<Department[]>([]);
@@ -32,7 +39,6 @@ const DepartmentsPage: React.FC = () => {
       setLoading(true);
       const data = await fetchDepartmentDetails();
       setDepartmentData(data);
-    
     } catch (error: any) {
       setError(error as Error);
       toast.error(`Error reloading department data: ${error.message}`);
@@ -42,7 +48,17 @@ const DepartmentsPage: React.FC = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <PuffLoader
+          color={"red"}
+          cssOverride={override}
+          size={150}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
   }
 
   if (error) {
@@ -50,23 +66,22 @@ const DepartmentsPage: React.FC = () => {
   }
 
   return (
-    <div>
-      <div className="container mx-auto py-10">
-        <DataTable
-          data={departmentData}
-          columns={departmentColumns({ reloadDataTable })}
-          addDialog={
-            <CustomDialog
-              title="Add Department"
-              description="Add New Department Record."
-              buttonText="Add Department"
-              internalComponents={
-                <AddDepartmentForm onFormSubmit={reloadDataTable} />
-              }
-            />
-          }
-        />
-      </div>
+    <div className="container mx-auto py-10">
+      
+      <DataTable
+        data={departmentData}
+        columns={departmentColumns({ reloadDataTable })}
+        addDialog={
+          <CustomDialog
+            title="Add Department"
+            description="Add New Department Record."
+            buttonText="Add Department"
+            internalComponents={
+              <AddDepartmentForm onFormSubmit={reloadDataTable} />
+            }
+          />
+        }
+      />
     </div>
   );
 };

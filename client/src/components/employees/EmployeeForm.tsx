@@ -14,13 +14,17 @@ import { Input } from "../ui/input";
 import * as z from "zod";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { EmployeeFormData } from "../../utils/types";
-import { createEmployee, updateEmployee } from "../../utils/api";
+import { Department, EmployeeFormData } from "../../utils/types";
+import {
+  createEmployee,
+  fetchDepartmentDetails,
+  updateEmployee,
+} from "../../utils/api";
 import toast from "react-hot-toast";
 
 interface EmployeeFormProps {
   onFormSubmit: () => void;
-  initialData?: EmployeeFormData
+  initialData?: EmployeeFormData;
   method: "POST" | "PUT";
 }
 
@@ -54,9 +58,26 @@ export function EmployeeForm({
     resolver: zodResolver(EmployeeFormSchema),
   });
 
+  const [departments, setDepartments] = useState<Department[]>([]);
+
+  useEffect(() => {
+    // Fetch department details when the component mounts
+    const fetchDepartments = async () => {
+      try {
+        const departmentData = await fetchDepartmentDetails();
+        setDepartments(departmentData);
+      } catch (error) {
+        console.error("Error fetching departments:", error);
+        toast.error(`Error fetching departments: ${error}`);
+      }
+    };
+
+    fetchDepartments();
+  }, []);
+
   useEffect(() => {
     if (initialData) {
-        console.log('Initial data:', initialData);
+      console.log("Initial data:", initialData);
       // Set initial values after form initialization
       Object.entries(initialData).forEach(([key, value]) => {
         form.setValue(key as any, value);
@@ -66,23 +87,27 @@ export function EmployeeForm({
 
   async function onSubmit(data: z.infer<typeof EmployeeFormSchema>) {
     try {
-        const response = await (method === "POST"
-          ? createEmployee(data)
-          : updateEmployee(Number(initialData?.employeeID) || 0, data));
-        console.log(response);
-        toast.success(`Employee ${method === "POST" ? "added" : "updated"} successfully`);
+      const response = await (method === "POST"
+        ? createEmployee(data)
+        : updateEmployee(Number(initialData?.employeeID) || 0, data));
+      console.log(response);
+      toast.success(
+        `Employee ${method === "POST" ? "added" : "updated"} successfully`
+      );
 
-        onFormSubmit();
-        form.reset();
-
-      }
-      catch (error: any) {
-      console.error(`Error ${method === "POST" ? "creating" : "updating"} employee:`, error);
-      toast.error(`Error ${method === "POST" ? "creating" : "updating"} department: ${error.response.data.error}`);
-
-
+      onFormSubmit();
+      form.reset();
+    } catch (error: any) {
+      console.error(
+        `Error ${method === "POST" ? "creating" : "updating"} employee:`,
+        error
+      );
+      toast.error(
+        `Error ${method === "POST" ? "creating" : "updating"} department: ${
+          error.response.data.error
+        }`
+      );
     } finally {
-
       console.log("Form submitted:", data);
     }
   }
@@ -155,14 +180,27 @@ export function EmployeeForm({
           name="departmentID"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Department ID</FormLabel>
+              <FormLabel>Department</FormLabel>
               <FormControl>
-                <Input type="number" placeholder="123" {...field} />
+                <select {...field} className="border p-2">
+                  <option value="" disabled>
+                    Select Department
+                  </option>
+                  {departments.map((department) => (
+                    <option
+                      key={department.departmentID}
+                      value={department.departmentID}
+                    >
+                      {department.departmentName}
+                    </option>
+                  ))}
+                </select>
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="dateOfBirth"
