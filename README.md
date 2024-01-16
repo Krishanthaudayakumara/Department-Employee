@@ -5,14 +5,14 @@
 <ul>
   <li>ReactJS with TypeScript</li>
   <li>Tailwind CSS</li>
-  <li>Shards UI</li>
+  <li>Shadcn-UI</li>
 </ul>
 
 <h3>Backend</h3>
 
 <ul>
   <li>.NET Core</li>
-  <li>SQL Server 2014+</li>
+  <li>SQL Server</li>
   <li>ADO.net libraries</li>
   <li>SQL stored procedures</li>
 </ul>
