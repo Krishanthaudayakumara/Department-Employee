@@ -25,7 +25,7 @@
   <li><strong>Error Handling</strong>: Provides informative feedback to users during errors.</li>
   <li><strong>Automatic Age Calculation</strong>: Calculates employee age based on date of birth.</li>
   <li><strong>React Routing</strong>: Handles navigation between different application sections.</li>
-  <li><strong>Clean and Accessible UI</strong>: Tailwind CSS and Shards UI facilitate user-friendly interfaces.</li>
+  <li><strong>Clean and Accessible UI</strong>: Tailwind CSS and Shadcn UI facilitate user-friendly interfaces.</li>
   <li><strong>Modular and Reusable Code</strong>: React components and TypeScript improve code maintainability.</li>
 </ul>
 
