@@ -57,3 +57,16 @@
   <li>TypeScript enforces type safety and clarifies code structure.</li>
   <li>Clear code comments improve understanding and future maintenance.</li>
 </ul>
+
+<h2>ScreenShots</h2>
+
+![Screenshot (347)](https://github.com/Krishanthaudayakumara/Department-Employee/assets/72347305/89350e55-f3ac-4ab3-9fbc-80c260304d50)
+![Screenshot (336)](https://github.com/Krishanthaudayakumara/Department-Employee/assets/72347305/bfb2c38c-8a7b-497b-bf49-276060023a71)
+![Screenshot (337)](https://github.com/Krishanthaudayakumara/Department-Employee/assets/72347305/fde23b12-6489-4374-917d-884c284e4c1c)
+![Screenshot (339)](https://github.com/Krishanthaudayakumara/Department-Employee/assets/72347305/6a92904b-a4e0-4f4a-a440-cad98840d9ce)
+![Screenshot (340)](https://github.com/Krishanthaudayakumara/Department-Employee/assets/72347305/6e60626a-abe9-470e-97f0-9e18ba61b250)
+![Screenshot (341)](https://github.com/Krishanthaudayakumara/Department-Employee/assets/72347305/2cda2afe-39db-435f-b574-b155d8d7e347)
+![Screenshot (342)](https://github.com/Krishanthaudayakumara/Department-Employee/assets/72347305/ed4e77f0-2950-4678-bbfb-87fd24ffbc52)
+![Screenshot (343)](https://github.com/Krishanthaudayakumara/Department-Employee/assets/72347305/b0ce3929-30a3-4f1a-a2a2-4a2f30cfa136)
+![Screenshot (344)](https://github.com/Krishanthaudayakumara/Department-Employee/assets/72347305/3d5bd8b5-63b3-4457-aa70-a066e3e5cd57)
+![Screenshot (345)](https://github.com/Krishanthaudayakumara/Department-Employee/assets/72347305/21ce2923-65e8-460b-a560-08919b1aae44)
